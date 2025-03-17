@@ -4,7 +4,6 @@
   <!-- 
       /*
       author: Marcin Kosinski
-      date: 2021-10-10
       www.sickvisu.com/kosinski/
       kosinski@sickvisu.com
       */
@@ -13,550 +12,553 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Made My Day - Rating app</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-</head>
-<body>
-  <div class="container">
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      :root{
-        --primary-color: #ff0078;
-        --primary-color-dark: color-mix(in srgb, var(--primary-color) 80%, black 20%);
-        --secondary-color: #ff0078;
-        text-color: #000;
-      }
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root{
+      --primary-color: #ff0078;
+      --primary-color-dark: color-mix(in srgb, var(--primary-color) 80%, black 20%);
+      --secondary-color: #ff0078;
+      text-color: #000;
+    }
 
-      body {
-        line-height: 1;
-        background: #ececec;
-      }
+    body {
+      line-height: 1;
+      background: #ececec;
+    }
 
-      ul, ol {
-        list-style: none;
-      }
+    ul, ol {
+      list-style: none;
+    }
 
-      a {
-        text-decoration: none;
-        color: var(--primary-color);
-        &:hover{
-          color: var(--primary-color-dark);
-        }
+    a {
+      text-decoration: none;
+      color: var(--primary-color);
+      &:hover{
+        color: var(--primary-color-dark);
       }
+    }
 
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px 20px;
-        font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        background: #fff;
-        padding: 20px 40px;
-        margin: 0px auto;
-        border-radius: 10px;
-        box-shadow: 0px 0px 5px #00000033;
-      }
-      section {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 40px 0;
-        border-bottom: 1px solid #eee;
-      }
-      h1, h2 {
-        color: #333;
-        font-size: 2.2rem;
-        line-height: 4rem;
-        margin:20px 0px;
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 20px;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      background: #fff;
+      padding: 20px 40px;
+      margin: 0px auto;
+      border-radius: 10px;
+      box-shadow: 0px 0px 5px #00000033;
+    }
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 0;
+      border-bottom: 1px solid #eee;
+    }
+    h1, h2 {
+      color: #333;
+      font-size: 2.2rem;
+      line-height: 4rem;
+      margin:20px 0px;
 
-        &.t{
-          background: linear-gradient(45deg, var(--primary-color), #000); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0px 1px 2px var(--primary-color));
-        }
+      &.t{
+        background: linear-gradient(45deg, var(--primary-color), #000); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0px 1px 2px var(--primary-color));
       }
+    }
 
-      p {
-        line-height: 1.6rem;
-        color: #666;
-        margin-bottom:40px;
-      }
-      hr{
-        margin: 40px 0;
-        border: 0;
-        border-top: 1px solid #eee;
-      }
-      img{
-        width: 100%; 
-      }
+    p {
+      line-height: 1.6rem;
+      color: #666;
+      margin-bottom:40px;
+    }
+    hr{
+      margin: 40px 0;
+      border: 0;
+      border-top: 1px solid #eee;
+    }
+    img{
+      width: 100%; 
+    }
 
 
-      .messages{
-        position: fixed;
-        right: 0;
-        top: 0;
-        padding: 20px;
+    .messages{
+      position: fixed;
+      right: 0;
+      top: 0;
+      padding: 20px;
+      display: block;
+
+      .msg{
+        padding: 10px;
+        margin: 10px 0;
+        color: #fff;
+        border-radius: 5px;
+        max-width: 250px;
         display: block;
+        overflow: hidden;
+        animation: msgFadeOut 2s ease-out forwards;
+      }
+    }
 
-        .msg{
-          padding: 10px;
-          margin: 10px 0;
-          color: #fff;
-          border-radius: 5px;
-          max-width: 250px;
-          display: block;
-          overflow: hidden;
-          animation: msgFadeOut 2s ease-out forwards;
+    .colors{
+      position: sticky;
+      top: 0px;
+      z-index: 1;
+
+      & .color{
+        width: 25px; height: 25px; background-color: rgb(51, 187, 204); ; display: inline-block; margin: 5px; border-radius: 50%; cursor: pointer;
+        &.active{
+          border: 2px solid #000;
         }
       }
+    }
 
-      .colors{
-        position: sticky;
-        top: 0px;
-        z-index: 1;
+    .images{
+      max-width: fit-content;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      min-height: 600px;
 
-        & .color{
-          width: 25px; height: 25px; background-color: rgb(51, 187, 204); ; display: inline-block; margin: 5px; border-radius: 50%; cursor: pointer;
-          &.active{
-            border: 2px solid #000;
-          }
-        }
-      }
+    
 
-      .images{
-        max-width: fit-content;
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-        min-height: 600px;
+      .card{
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 40px;
+        font-weight: bold;
 
-      
-
-        .card{
-          position: relative;
+        .image-wrapper{
+          background: antiquewhite;
+          aspect-ratio: 1/1;
           width: 100%;
-          max-width: 500px;
-          margin-bottom: 40px;
-          font-weight: bold;
-
-          .image-wrapper{
-            background: antiquewhite;
-            aspect-ratio: 1/1;
-            width: 100%;
-            overflow: clip;
-            line-height: 0;
-            &:hover {
-              border: 4px solid var(--primary-color);
-              box-shadow: 0px 3px 17px 0px var(--primary-color);
-              transition: border .2s;
-              img {
-                transform: scale(1.2);
-              }
-            }
+          overflow: clip;
+          line-height: 0;
+          &:hover {
+            border: 4px solid var(--primary-color);
+            box-shadow: 0px 3px 17px 0px var(--primary-color);
+            transition: border .2s;
             img {
-              transition: transform 0.3s ease;
+              transform: scale(1.2);
             }
           }
-          
-          .likes-wrap{
-            display: flex;
-            margin-top: 10px;
-            gap: 10px;
-            align-items: center;
-            justify-content: space-between;
+          img {
+            transition: transform 0.3s ease;
+          }
+        }
+        
+        .likes-wrap{
+          display: flex;
+          margin-top: 10px;
+          gap: 10px;
+          align-items: center;
+          justify-content: space-between;
 
-            .title{
-              color: var(--overlay-text-color);
-              padding: 10px 0px;
-              flex-grow: 1;
-              text-align: left;
-            }
+          .title{
+            color: var(--overlay-text-color);
+            padding: 10px 0px;
+            flex-grow: 1;
+            text-align: left;
           }
+        }
+          
+        &.liked{
+          & .btn-like{
+            background-color: var(--primary-color);
+            color: #fff;
+          }
+        }
+        &.disliked{
+          & .btn:not(.btn-like){
+            background-color: #000;
+            color: #fff;
+          }
+          filter: grayscale(.8);
+        }
+      }
+
+      .btn{
+        user-select: none;
+        padding: 10px;
+        bottom: 0;
+        background-color: var(--overlay-bg-color);
+        color: var(--overlay-text-color);
+        background: #ececec;
+        border-radius: 100px;
+        padding: 10px 20px;
+        display: flex; align-items: center;
+        gap:5px;
+        border: 0px solid #e1e1e1;
+        box-shadow: 0px 0px 1px #00000070;
+        
+        cursor: pointer;
+        &:hover{
+          background-color: #d2faff;
+          animation: pulse .5s ease-in-out infinite;
+        }
+      }
+      
+    }
+
+
+    
+    
+    @keyframes msgFadeOut {
+      0% {
+        opacity: 0;
+        max-height: 0;
+        transform: scaleY(0);
+        padding: 10px 10px;
+        margin: 10px 0px;
+      }
+      10% {
+        opacity: 1;
+        max-height: 100px;
+        transform: scaleY(1);
+        padding: 10px 10px;
+        margin: 10px 0px;
+      }
+      90% {
+        opacity: 1;
+        max-height: 100px;
+        transform: scaleY(1);
+        
+        padding: 10px 10px;
+        margin: 10px 0px;
+      }
+      100% {
+        opacity: 0;
+        max-height: 0;
+        transform: scaleY(0);
+        
+        padding: 0px 10px;
+        margin: 0px 0px;
+      }
+    }
+    
+    @keyframes pulse {
+      0% {
+        background-color: var(--primary-color);
+      }
+      50% {
+        background-color: color-mix(in srgb, var(--primary-color) 80%, black 20%);
+      }
+      100% {
+        background-color: var(--primary-color);
+      }
+    }
+
+    @keyframes imgZoom {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+
+    @keyframes zoomInOut {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    
+    /* Small devices (portrait tablets and large phones, 600px and up) */
+    @media only screen and (min-width: 600px) {
+      h1{ font-size: 3.4rem; line-height: 4rem; margin:40px; }
+    }
+
+    /* Medium devices (landscape tablets, 768px and up) */
+    @media only screen and (min-width: 768px) {
+    }
+
+    @media only screen and (min-width: 992px) {
+      .container { padding: 20px 40px; margin:20px auto; }
+      .images{ flex-direction: row; }
+    }
+
+  </style>
+
+
+
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', async function() {
+      
+      // Update image scales based on scroll position
+      function updateImageScales() {
+        const cards = document.querySelectorAll('.card');
+        const windowHeight = window.innerHeight;
+        
+        cards.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          const centerY = rect.top + (rect.height / 2);
+          const distanceFromCenter = Math.abs(centerY - (windowHeight / 2));
+          const maxDistance = windowHeight / 2;
+          
+          const scale = Math.max(0.8, 1 - (distanceFromCenter / maxDistance) * 0.2);
+          card.style.transform = `scale(${scale})`;
+        });
+      }
+
+      
+      
+
+      // const
+      ratingDiv = document.querySelector('.rating');
+      imagesDiv = document.querySelector('.images');
+      messagesDiv = document.querySelector('.messages');
+      let images = []; // images data from API
+      
+
+      function showMessage(msg, type='info', logMsg='') {
+        // function to show messages
+        const msgDiv = document.createElement('div');
+        msgDiv.classList = 'msg';
+        msgDiv.innerHTML = msg + ' ' + logMsg;
+
+        if (type === 'error') {
+          msgDiv.style.backgroundColor = '#f00';
+        }else if (type === 'success') {
+          msgDiv.style.backgroundColor = '#000';
+        } else {
+          msgDiv.style.backgroundColor = 'var(--primary-color)';
+        }
+        messagesDiv.appendChild(msgDiv);
+
+        const timeout = setTimeout(() => {
+          if (msgDiv.parentNode) {
+            msgDiv.parentNode.removeChild(msgDiv);
+          }
+        }, 2100);
+
+        // Attach timeout to message div for cleanup
+        msgDiv.timeout = timeout;
+      }
+
+
+     
+
+      async function likeDislikeImage(imageId,type='LIKE'){
+        // Like or Dislike an image using API
+        try {
+          if( imageId === undefined || imageId === null){
+            console.error('Image ID is required');
             
-          &.liked{
-            & .btn-like{
-              background-color: var(--primary-color);
-              color: #fff;
-            }
+            showMessage(`Image ID is required`, 'error')
+            return;
           }
-          &.disliked{
-            & .btn:not(.btn-like){
-              background-color: #000;
-              color: #fff;
-            }
-            filter: grayscale(.8);
-          }
-        }
 
-        .btn{
-          user-select: none;
-          padding: 10px;
-          bottom: 0;
-          background-color: var(--overlay-bg-color);
-          color: var(--overlay-text-color);
-          background: #ececec;
-          border-radius: 100px;
-          padding: 10px 20px;
-          display: flex; align-items: center;
-          gap:5px;
-          border: 0px solid #e1e1e1;
-          box-shadow: 0px 0px 1px #00000070;
           
-          cursor: pointer;
-          &:hover{
-            background-color: #d2faff;
-            animation: pulse .5s ease-in-out infinite;
-          }
-        }
-        
-      }
 
-
-      
-      
-      @keyframes msgFadeOut {
-        0% {
-          opacity: 0;
-          max-height: 0;
-          transform: scaleY(0);
-          padding: 10px 10px;
-          margin: 10px 0px;
-        }
-        10% {
-          opacity: 1;
-          max-height: 100px;
-          transform: scaleY(1);
-          padding: 10px 10px;
-          margin: 10px 0px;
-        }
-        90% {
-          opacity: 1;
-          max-height: 100px;
-          transform: scaleY(1);
-          
-          padding: 10px 10px;
-          margin: 10px 0px;
-        }
-        100% {
-          opacity: 0;
-          max-height: 0;
-          transform: scaleY(0);
-          
-          padding: 0px 10px;
-          margin: 0px 0px;
-        }
-      }
-      
-      @keyframes pulse {
-        0% {
-          background-color: var(--primary-color);
-        }
-        50% {
-          background-color: color-mix(in srgb, var(--primary-color) 80%, black 20%);
-        }
-        100% {
-          background-color: var(--primary-color);
-        }
-      }
-
-      @keyframes imgZoom {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.2);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-
-      @keyframes zoomInOut {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      
-      /* Small devices (portrait tablets and large phones, 600px and up) */
-      @media only screen and (min-width: 600px) {
-        h1{ font-size: 3.4rem; line-height: 4rem; margin:40px; }
-      }
-
-      /* Medium devices (landscape tablets, 768px and up) */
-      @media only screen and (min-width: 768px) {
-      }
-
-      @media only screen and (min-width: 992px) {
-        .container { padding: 20px 40px; margin:20px auto; }
-        .images{ flex-direction: row; }
-      }
-
-    </style>
-
-
-
-    <script>
-      
-      document.addEventListener('DOMContentLoaded', async function() {
-        
-        // Update image scales based on scroll position
-        function updateImageScales() {
-          const cards = document.querySelectorAll('.card');
-          const windowHeight = window.innerHeight;
-          
-          cards.forEach(card => {
-            const rect = card.getBoundingClientRect();
-            const centerY = rect.top + (rect.height / 2);
-            const distanceFromCenter = Math.abs(centerY - (windowHeight / 2));
-            const maxDistance = windowHeight / 2;
-            
-            const scale = Math.max(0.8, 1 - (distanceFromCenter / maxDistance) * 0.2);
-            card.style.transform = `scale(${scale})`;
-          });
-        }
-
-        
-        
-
-        // const
-        ratingDiv = document.querySelector('.rating');
-        imagesDiv = document.querySelector('.images');
-        messagesDiv = document.querySelector('.messages');
-        let images = []; // images data from API
-        
-
-        function showMessage(msg, type='info', logMsg='') {
-          // function to show messages
-          const msgDiv = document.createElement('div');
-          msgDiv.classList = 'msg';
-          msgDiv.innerHTML = msg;
-
-          if (type === 'error') {
-            msgDiv.style.backgroundColor = '#f00';
-          }else if (type === 'success') {
-            msgDiv.style.backgroundColor = '#000';
-          } else {
-            msgDiv.style.backgroundColor = 'var(--primary-color)';
-          }
-          messagesDiv.appendChild(msgDiv);
-
-          const timeout = setTimeout(() => {
-            if (msgDiv.parentNode) {
-              msgDiv.parentNode.removeChild(msgDiv);
-            }
-          }, 2100);
-
-          // Attach timeout to message div for cleanup
-          msgDiv.timeout = timeout;
-        }
-
-
-       
-
-        async function likeDislikeImage(imageId,type='LIKE'){
-          // Like or Dislike an image using API
-          try {
-            if( imageId === undefined || imageId === null){
-              console.error('Image ID is required');
-              return;
-            }
-
-            
-
-            const response = await fetch('https://api.mademyday.ai/Mock/rateimages.php', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                id: imageId,
-                rate: "LIKE"
-              })
+          const response = await fetch('https://api.mademyday.ai/Mock/rateimages.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: imageId,
+              rate: "LIKE"
             })
-            const ratings = await response.json();
-            if(ratings.STATUS !== 'OK'){
-              showMessage(`Error rating image ${imageId}`, 'error')
-            }else{
-              showMessage(`You ${type.toLocaleLowerCase()}d image ${imageId}`, 'success')
-              
-            }
-
+          })
+          const ratings = await response.json();
+          if(ratings.STATUS !== 'OK'){
+            showMessage(`Error rating image ${imageId}`, 'error')
+          }else{
+            showMessage(`You ${type.toLocaleLowerCase()}d image ${imageId}`, 'success')
             
-          } catch (error) {
-            console.error('Error fetching images:', error);
           }
+
+          
+        } catch (error) {
+          console.error('Error rating images:', error);
+          showMessage(`Error rating images`, 'error', error)
         }
+      }
 
-        
-        // Fetch images from API
-        async function fetchImages() {
-          console.log('Fetching images...');
-          try {
-            const response = await fetch('https://api.mademyday.ai/Mock/getimages.php');
-            images = await response.json();
+      
+      // Fetch images from API
+      async function fetchImages() {
+        console.log('Fetching images...');
+        try {
+          const response = await fetch('https://api.mademyday.ai/Mock/getimages.php');
+          images = await response.json();
 
-            if(images.length === 0){
-              showMessage(`No images found!`, 'error');
-              imagesDiv.innerHTML = `<p>No images found!</p>`;
+          if(images.length === 0){
+            showMessage(`No images found!`, 'error');
+            imagesDiv.innerHTML = `<p>No images found!</p>`;
+            return;
+          }
+          console.log('Images data:', images);
+        } catch (error) {
+          showMessage(`Error: cant fetch images!`, 'error', error);
+          imagesDiv.innerHTML = `<p>Error fetching images, try again</p>`;
+          console.error('Error fetching images:', error);
+        }
+      }
+
+      await fetchImages();
+      
+      
+      // create images 
+      images.forEach( image => {
+        const imgWrapDiv = document.createElement('div');
+        imgWrapDiv.classList = 'image-wrapper';
+        const imgDiv = document.createElement('div');
+        const img = document.createElement('img');
+        img.src = image.url;
+        img.alt = image.description;
+        // img.dataset.likes = image.likes;
+        // img.dataset.id = image.id;
+
+        imgDiv.dataset.likes = image.likes;
+        imgDiv.dataset.id = image.id;
+        imgDiv.classList = 'card';
+        imgDiv.onclick = async function(e) {
+          
+          // LIKE Button
+          if (e.target?.closest('.btn')?.classList?.contains('btn-like')) {
+            console.log('You clicked on like', e.target, this);
+
+            if(this.classList.contains('liked')){
+              showMessage(`You already rated this image!`, 'error');
               return;
             }
-            console.log('Images data:', images);
-          } catch (error) {
-            showMessage(`Error: cant fetch images!`, 'error');
-            imagesDiv.innerHTML = `<p>Error fetching images, try again</p>`;
-            console.error('Error fetching images:', error);
-          }
-        }
-
-        await fetchImages();
-        
-        
-        
-        // create images 
-        images.forEach( image => {
-          const imgWrapDiv = document.createElement('div');
-          imgWrapDiv.classList = 'image-wrapper';
-          const imgDiv = document.createElement('div');
-          const img = document.createElement('img');
-          img.src = image.url;
-          img.alt = image.description;
-          // img.dataset.likes = image.likes;
-          // img.dataset.id = image.id;
-
-          imgDiv.dataset.likes = image.likes;
-          imgDiv.dataset.id = image.id;
-          imgDiv.classList = 'card';
-          imgDiv.onclick = async function(e) {
             
-            // LIKE Button
-            if (e.target?.closest('.btn')?.classList?.contains('btn-like')) {
-              console.log('You clicked on like', e.target, this);
-
-              if(this.classList.contains('liked')){
-                showMessage(`You already rated this image!`, 'error');
-                return;
-              }
-              
-              this.dataset.likes = parseInt(this.dataset.likes) + 1;
-              this.querySelector('.likesAmount').innerHTML = this.dataset.likes;
-              this.classList.add('liked');
-              this.classList.remove('disliked');
-              await likeDislikeImage(this.dataset.id);
-            }
-
-            if (e.target?.closest('.btn')?.classList?.contains('btn-dislike')) {
-              
-              if(this.classList.contains('disliked')){
-                showMessage('You already rated this image!', 'error');
-                return;
-              }
-
-              console.log('You clicked on like', e.target, this.dataset.likes);
-              
-              this.dataset.likes = parseInt(this.dataset.likes) - 1;
-              this.querySelector('.likesAmount').innerHTML = this.dataset.likes;
-
-              await likeDislikeImage(this.dataset.id, 'DISLIKE');
-              
-              this.classList.remove('liked');
-              this.classList.add('disliked');
-            }
-
-            if (e.target.tagName === 'IMG') {
-              // console.log('You clicked on image', e.target);
-
-            }
-            // console.log('You clicked on likes', e.target);
+            this.dataset.likes = parseInt(this.dataset.likes) + 1;
+            this.querySelector('.likesAmount').innerHTML = this.dataset.likes;
+            this.classList.add('liked');
+            this.classList.remove('disliked');
+            await likeDislikeImage(this.dataset.id);
           }
 
-          imgWrapDiv.appendChild(img);
-          imgDiv.appendChild(imgWrapDiv);
-          
-          
-          likesWrapDiv = document.createElement('div');
-          likesWrapDiv.classList = 'likes-wrap';
+          if (e.target?.closest('.btn')?.classList?.contains('btn-dislike')) {
+            
+            if(this.classList.contains('disliked')){
+              showMessage('You already rated this image!', 'error');
+              return;
+            }
 
-          titleDiv = document.createElement('div');
-          titleDiv.classList = 'title';
-          titleDiv.innerHTML = `${image.description} `;
-          likesWrapDiv.appendChild(titleDiv);
+            console.log('You clicked on like', e.target, this.dataset.likes);
+            
+            this.dataset.likes = parseInt(this.dataset.likes) - 1;
+            this.querySelector('.likesAmount').innerHTML = this.dataset.likes;
 
-          likesDiv = document.createElement('div');
-          likesDiv.classList = 'btn btn-like';
-          likesDiv.innerHTML = `<i class="bi bi-hand-thumbs-up-fill"></i> <span class="likesAmount">${image.likes}</span>`;
-          likesWrapDiv.appendChild(likesDiv);
+            await likeDislikeImage(this.dataset.id, 'DISLIKE');
+            
+            this.classList.remove('liked');
+            this.classList.add('disliked');
+          }
 
-          dislikeDiv = document.createElement('div');
-          dislikeDiv.classList = 'btn btn-dislike';
-          dislikeDiv.innerHTML = `<i class="bi bi-hand-thumbs-down-fill"></i> `;
-          likesWrapDiv.appendChild(dislikeDiv);
+          if (e.target.tagName === 'IMG') {
+            // console.log('You clicked on image', e.target);
 
-
-          
-          imgDiv.appendChild(likesWrapDiv);
-
-          imagesDiv.appendChild(imgDiv);
-
-
-        });
-
-
-
-
-        // extra thing - colors
-        const colors = ['#ff0078', '#33bbcc', '#3f33cc', '#33cc60'];
-
-        colors.forEach((color, index) => {
-          const colorDiv = document.createElement('div');
-          colorDiv.classList = 'color';
-          colorDiv.style.backgroundColor = color;
-          colorDiv.onclick = function() {
-            const root = document.documentElement;
-            root.style.setProperty('--primary-color', color);
-            this.classList.add('active');
-            colors.forEach((c, i) => {
-              if (i !== index) {
-                document.querySelector(`.color:nth-child(${i + 1})`).classList.remove('active');
-              }
-            });
-            clearInterval(window.colorInterval);
-            // window.colorInterval = setInterval(switchPrimaryColor, 5000);
-          };
-          document.querySelector('.colors').appendChild(colorDiv);
-        });
-
-        function switchPrimaryColor() {
-          const root = document.documentElement;
-          const currentColor = getComputedStyle(root).getPropertyValue('--primary-color').trim();
-          const currentIndex = colors.indexOf(currentColor);
-          const nextIndex = (currentIndex + 1) % colors.length;
-          root.style.setProperty('--primary-color', colors[nextIndex]);
+          }
+          // console.log('You clicked on likes', e.target);
         }
 
-        // Switch color every 5 seconds
-        window.colorInterval = setInterval(switchPrimaryColor, 5000);
+        imgWrapDiv.appendChild(img);
+        imgDiv.appendChild(imgWrapDiv);
+        
+        
+        likesWrapDiv = document.createElement('div');
+        likesWrapDiv.classList = 'likes-wrap';
 
-        window.addEventListener('scroll', updateImageScales);
-        updateImageScales();
+        titleDiv = document.createElement('div');
+        titleDiv.classList = 'title';
+        titleDiv.innerHTML = `${image.description} `;
+        likesWrapDiv.appendChild(titleDiv);
+
+        likesDiv = document.createElement('div');
+        likesDiv.classList = 'btn btn-like';
+        likesDiv.innerHTML = `<i class="bi bi-hand-thumbs-up-fill"></i> <span class="likesAmount">${image.likes}</span>`;
+        likesWrapDiv.appendChild(likesDiv);
+
+        dislikeDiv = document.createElement('div');
+        dislikeDiv.classList = 'btn btn-dislike';
+        dislikeDiv.innerHTML = `<i class="bi bi-hand-thumbs-down-fill"></i> `;
+        likesWrapDiv.appendChild(dislikeDiv);
+
+
+        
+        imgDiv.appendChild(likesWrapDiv);
+
+        imagesDiv.appendChild(imgDiv);
 
 
       });
-    </script>
 
 
+
+
+      // extra thing - colors
+      const colors = ['#ff0078', '#33bbcc', '#3f33cc', '#33cc60'];
+
+      colors.forEach((color, index) => {
+        const colorDiv = document.createElement('div');
+        colorDiv.classList = 'color';
+        colorDiv.style.backgroundColor = color;
+        colorDiv.onclick = function() {
+          const root = document.documentElement;
+          root.style.setProperty('--primary-color', color);
+          this.classList.add('active');
+          colors.forEach((c, i) => {
+            if (i !== index) {
+              document.querySelector(`.color:nth-child(${i + 1})`).classList.remove('active');
+            }
+          });
+          clearInterval(window.colorInterval);
+          // window.colorInterval = setInterval(switchPrimaryColor, 5000);
+        };
+        document.querySelector('.colors').appendChild(colorDiv);
+      });
+
+      function switchPrimaryColor() {
+        const root = document.documentElement;
+        const currentColor = getComputedStyle(root).getPropertyValue('--primary-color').trim();
+        const currentIndex = colors.indexOf(currentColor);
+        const nextIndex = (currentIndex + 1) % colors.length;
+        root.style.setProperty('--primary-color', colors[nextIndex]);
+      }
+
+      // Switch color every 5 seconds
+      window.colorInterval = setInterval(switchPrimaryColor, 5000);
+
+      window.addEventListener('scroll', updateImageScales);
+      updateImageScales();
+
+
+    });
+  </script>
+
+
+</head>
+<body>
+  <div class="container">
     <h3>Welcome to </h3>
 
     <h1 class="t">MadeMyDay: <span style="white-space: nowrap;">Rating App</span></h1>
